@@ -1,4 +1,4 @@
-discord
+-U discord
 time
 sqlite3
 datetime
