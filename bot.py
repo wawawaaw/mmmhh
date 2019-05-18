@@ -144,6 +144,14 @@ async def roulette(ctx):
     
 @bot.command()
 async def connect(ctx):
+	if not discord.opus.is_loaded():
+	# the 'opus' library here is opus.dll on windows
+	# or libopus.so on linux in the current directory
+	# you should replace this with the location the
+	# opus library is located in and with the proper filename.
+	# note that on windows this DLL is automatically provided for you
+	discord.opus.load_opus('libopus-0.dll')
+	
     if ctx.message.author.guild_permissions.administrator:
         channel = ctx.message.author.voice.channel
         if not channel:

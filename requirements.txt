@@ -1,2 +1,4 @@
-discord.py[voice]
-
+discord.py
+pynacl
+opuslib
+opus-api
