@@ -3,7 +3,7 @@ import asyncio
 import time
 import os
 import sqlite3
-from datetime import datetime
+from datetime import datetime, timedelta
 from discord.ext import commands
 from discord.ext.commands import has_permissions, CheckFailure
 
@@ -49,7 +49,7 @@ async def on_ready():
 @bot.command()
 async def stime(ctx):
     if ctx.message.author.guild_permissions.administrator:
-        now = datetime.now()
+        now = datetime.now() + timedelta(hours=2)
         await ctx.send(now.strftime("%Y-%m-%d %H:%M:%S"))
     else:
         await ctx.send('fdp ta pas la perm')
@@ -149,7 +149,7 @@ async def ramadan():
             while channelid != None:
                 userL = ""
                 ligne_jour = []
-                now = datetime.now()
+                now = datetime.now() + timedelta(hours=2)
                 date = now.strftime("%Y-%m-%d")
                 c.execute('SELECT * FROM ramadan WHERE date=?', [date])
                 for LJ in c.fetchone():
@@ -157,7 +157,7 @@ async def ramadan():
                 while now.strftime("%H:%M:%S") != "23:59:59":
                     await asyncio.sleep(0.5)
                     for x in ligne_jour[1:]:
-                        now = datetime.now()
+                        now = datetime.now() + timedelta(hours=2)
                         if now.strftime("%H:%M:%S") == x:
                             await asyncio.sleep(1)
                             for user in user_notify:
