@@ -10,13 +10,6 @@ from discord.ext.commands import has_permissions, CheckFailure
 from discord.utils import get
 from discord import FFmpegPCMAudio
 
-#if not discord.opus.is_loaded():
-#    # the 'opus' library here is opus.dll on windows
-#    # or libopus.so on linux in the current directory
-#    # you should replace this with the location the
-#    # opus library is located in and with the proper filename.
-#    # note that on windows this DLL is automatically provided for you
-#    discord.opus.load_opus('opus')
     
 bot = commands.Bot(command_prefix='.')
 channelid = None
@@ -50,10 +43,7 @@ dates = [('2019-05-18', '04:08:00', '13:48:00', '17:57:00', '21:32:00', '23:09:0
 c.executemany('INSERT INTO ramadan VALUES (?,?,?,?,?,?)', dates)
 
 
-                    
-@bot.event
-async def on_ready():
-    print('Bot is on')
+
                     
                     
 @bot.command()
