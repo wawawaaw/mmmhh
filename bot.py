@@ -1,11 +1,13 @@
 import discord
 import asyncio
+import random
 import time
-import os
 import sqlite3
 from datetime import datetime, timedelta
 from discord.ext import commands
 from discord.ext.commands import has_permissions, CheckFailure
+from discord.utils import get
+from discord import FFmpegPCMAudio
 
 bot = commands.Bot(command_prefix='.')
 
@@ -58,10 +60,8 @@ async def stime(ctx):
 async def clear(ctx, args):
     try:
         amount = int(args)
-
     except:
         pass
-    
     if ctx.message.author.guild_permissions.administrator:
         await ctx.channel.purge(limit=amount)
         await ctx.send(str(amount)+' message.s supprimé.s')
@@ -129,16 +129,49 @@ async def updatedate(ctx, n1, n2, n3):
         await ctx.send('fdp ta pas la perm')
         
 @bot.command()
+async def roulette(ctx):
+    rand = random.uniform(0, 1)*100
+    await ctx.send('Si le numéro tiré au sort est > à 50 tu es kick')
+    await ctx.send('Et le numéro est ...')
+    await ctx.send(int(rand))
+    if rand > 50:
+        await ctx.author.kick()
+        await ctx.send('Dommage :(')
+    else:
+        await ctx.send('La chance :)')
+    await ctx.channel.purge(limit=5)
+    
+@bot.command()
+async def connect(ctx):
+    if ctx.message.author.guild_permissions.administrator:
+        channel = ctx.message.author.voice.channel
+        if not channel:
+            await ctx.send("You are not connected to a voice channel")
+            return
+        voice = get(bot.voice_clients)
+        if voice and voice.is_connected():
+            await voice.move_to(channel)
+        else:
+            voice = await channel.connect()
+    else:
+        await ctx.send('fdp ta pas la perm')
+        
+@bot.command()
 async def selectall(ctx):
-    s = ""
-    try:
-        for row in c.execute('SELECT * FROM ramadan'):
-            s+=str(row)+"\n"
-        await ctx.send(s)
-    except:
-        await ctx.send('Table vide.')
-       
-       
+    if ctx.message.author.guild_permissions.administrator:
+        s = ""
+        try:
+            for row in c.execute('SELECT * FROM ramadan'):
+                s+=str(row)+"\n"
+            await ctx.send(s)
+        except:
+            await ctx.send('Table vide.')
+    else:
+        await ctx.send('fdp ta pas la perm')
+@bot.command()
+async def ping(ctx):
+    await ctx.send('Pong')  
+    
 async def ramadan():
     await bot.wait_until_ready()
     
@@ -165,7 +198,8 @@ async def ramadan():
                             s = ("Il est "+now.strftime("%H:%M:%S")+", et c'est l'heure du"+" "+str(ligne_jour.index(x))+" "+userL)
                             await channel.send(s.replace(' 1 ', ' FEJR :pray: ').replace(' 2 ', ' DHUHR :pray: ').replace(' 3 ', ' ASSER :pray: ').replace(' 4 ', ' MAGHREB :pray: ').replace(' 5 ', ' ICHA :pray: '))                            
                             userL = ""
-
+                            source = FFmpegPCMAudio('allah.mp3')
+                            player = voice.play(source)
     
 bot.loop.create_task(ramadan())
 bot.run(os.getenv('BOT_TOKEN'))
