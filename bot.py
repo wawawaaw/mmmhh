@@ -1,6 +1,7 @@
 import discord
 import asyncio
 import time
+import os
 import sqlite3
 from datetime import datetime
 from discord.ext import commands
@@ -134,4 +135,4 @@ async def ramadan():
 
 
 bot.loop.create_task(ramadan())
-client.run(str(os.environ.get('BOT_TOKEN')))
+client.run(os.environ.get('BOT_TOKEN'))
