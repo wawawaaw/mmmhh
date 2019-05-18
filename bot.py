@@ -57,9 +57,14 @@ async def stime(ctx):
     
 @bot.command()
 async def clear(ctx, amount):
+    try:
+        amount = int(args[0])
+    except:
+        pass
+    
     if ctx.message.author.guild_permissions.administrator:
         await ctx.channel.purge(limit=amount)
-        await ctx.send(amount+' message.s supprimé.s')
+        await ctx.send(str(amount)+' message.s supprimé.s')
     else:
         await ctx.send('fdp ta pas la perm')
     
