@@ -168,6 +168,7 @@ async def selectall(ctx):
             await ctx.send('Table vide.')
     else:
         await ctx.send('fdp ta pas la perm')
+        
 @bot.command()
 async def ping(ctx):
     await ctx.send('Pong')  
