@@ -49,13 +49,20 @@ async def on_ready():
                     
 @bot.command()
 async def stime(ctx):
-    now = datetime.now()
-    await ctx.send(now.strftime("%Y-%m-%d %H:%M:%S"))
+    if ctx.message.author.guild_permissions.administrator:
+        now = datetime.now()
+        await ctx.send(now.strftime("%Y-%m-%d %H:%M:%S"))
+    else:
+        await ctx.send('fdp ta pas la perm')
     
 @bot.command()
 async def clear(ctx, amount=100):
-    await ctx.channel.purge(limit=amount)
+    if ctx.message.author.guild_permissions.administrator:
+        await ctx.channel.purge(limit=amount)
+    else:
+        await ctx.send('fdp ta pas la perm')
     
+        
 @bot.command()
 async def notify(ctx, choice):
     try:
@@ -78,33 +85,39 @@ async def notify(ctx, choice):
 
 @bot.command()
 async def here(ctx):
-    global channelid
-    channelid = ctx.channel.id
-    await ctx.send('Le bot travaillera ici')
-    
+    if ctx.message.author.guild_permissions.administrator:
+        global channelid
+        channelid = ctx.channel.id
+        await ctx.send('Le bot travaillera ici')
+    else:
+        await ctx.send('fdp ta pas la perm')
+        
 @bot.command()
 async def test(ctx):
-    await ctx.send(user_notify)
+    if ctx.message.author.guild_permissions.administrator:
+        await ctx.send(user_notify)
+    else:
+        await ctx.send('fdp ta pas la perm')
     
-@bot.command()
-async def send(ctx):
-    for user in user_notify:
-        await ctx.send('Coucou %s' %user)
+#@bot.command()
+#async def send(ctx):
+#    for user in user_notify:
+#        await ctx.send('Coucou %s' %user)
                         
                     
-@bot.command()
-async def insertdate(ctx, DATE, FEJR, DHUHR, ASSER, MAGHREB, ICHA):
-    c.execute("INSERT INTO ramadan VALUES ('{}','{}','{}','{}','{}','{}')".format(DATE, FEJR, DHUHR, ASSER, MAGHREB, ICHA))
-    conn.commit()
+#@bot.command()
+#async def insertdate(ctx, DATE, FEJR, DHUHR, ASSER, MAGHREB, ICHA):
+#    c.execute("INSERT INTO ramadan VALUES ('{}','{}','{}','{}','{}','{}')".format(DATE, FEJR, DHUHR, ASSER, MAGHREB, ICHA))
+#    conn.commit()
 
-@bot.command()
-async def selectall(ctx):
-    try:
-        for row in c.execute('SELECT * FROM ramadan'):
-            time.sleep(1)
-            await ctx.send(row)
-    except:
-       await ctx.send("Error") 
+#@bot.command()
+#async def selectall(ctx):
+#    try:
+#        for row in c.execute('SELECT * FROM ramadan'):
+#            time.sleep(1)
+#            await ctx.send(row)
+#    except:
+#       await ctx.send("Error") 
        
        
 async def ramadan():
@@ -127,12 +140,13 @@ async def ramadan():
                     for x in ligne_jour[1:]:
                         now = datetime.now()
                         if now.strftime("%H:%M:%S") == x:
+                            await asyncio.sleep(1)
                             for user in user_notify:
                                 userL += user+" "
                             s = ("Il est "+now.strftime("%H:%M:%S")+", et c'est l'heure du"+" "+str(ligne_jour.index(x))+" "+userL)
                             await channel.send(s.replace(' 1 ', ' FEJR :pray: ').replace(' 2 ', ' DHUHR :pray: ').replace(' 3 ', ' ASSER :pray: ').replace(' 4 ', ' MAGHREB :pray: ').replace(' 5 ', ' ICHA :pray: '))                            
                             userL = ""
 
-
+    
 bot.loop.create_task(ramadan())
 bot.run(os.getenv('BOT_TOKEN'))
