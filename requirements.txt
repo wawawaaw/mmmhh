@@ -1,0 +1,5 @@
+discord
+time
+sqlite3
+datetime
+pip
