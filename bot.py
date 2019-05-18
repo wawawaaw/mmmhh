@@ -59,6 +59,7 @@ async def stime(ctx):
 async def clear(ctx, amount):
     if ctx.message.author.guild_permissions.administrator:
         await ctx.channel.purge(limit=amount)
+        await ctx.send(amount+' message.s supprimé.s')
     else:
         await ctx.send('fdp ta pas la perm')
     
