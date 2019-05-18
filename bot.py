@@ -3,6 +3,7 @@ import asyncio
 import random
 import time
 import sqlite3
+import libopus
 import os
 from datetime import datetime, timedelta
 from discord.ext import commands
