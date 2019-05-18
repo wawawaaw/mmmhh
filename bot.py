@@ -116,7 +116,7 @@ async def selectall(ctx):
     try:
         for row in c.execute('SELECT * FROM ramadan'):
             s+= row+"\n"
-        await ctx.send(row)
+        await ctx.send(s)
     except:
        await ctx.send("Error") 
        
