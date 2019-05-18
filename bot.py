@@ -56,7 +56,7 @@ async def stime(ctx):
         await ctx.send('fdp ta pas la perm')
     
 @bot.command()
-async def clear(ctx, amount):
+async def clear(ctx, args):
     try:
         amount = int(args[0])
     except:
