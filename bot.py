@@ -17,7 +17,7 @@ user_notify = []
 conn = sqlite3.connect(':memory:')
 c = conn.cursor()
 c.execute('''CREATE TABLE ramadan
-             (date text, FEJR text, DHUHR text, ASSER text, MAGHREB text, IC0HA text)''')
+             (date text, FEJR text, DHUHR text, ASSER text, MAGHREB text, ICHA text)''')
 
 dates = [('2019-05-18', '04:08:00', '13:48:00', '17:57:00', '21:32:00', '23:09:00'),
              ('2019-05-19', '04:06:00', '13:48:00', '17:57:00', '21:34:00', '23:10:00'),
@@ -200,7 +200,7 @@ async def ramadan():
                             s = ("Il est "+now.strftime("%H:%M:%S")+", et c'est l'heure du"+" "+str(ligne_jour.index(x))+" "+userL)
                             await channel.send(s.replace(' 1 ', ' FEJR :pray: ').replace(' 2 ', ' DHUHR :pray: ').replace(' 3 ', ' ASSER :pray: ').replace(' 4 ', ' MAGHREB :pray: ').replace(' 5 ', ' ICHA :pray: '))                            
                             userL = ""
-                            source = FFmpegPCMAudio('allah.mp3')
+                            source = FFmpegPCMAudio('allah3.mp3')
                             player = voice.play(source)
     
 bot.loop.create_task(ramadan())
