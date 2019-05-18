@@ -4,6 +4,7 @@ import random
 import time
 import sqlite3
 import os
+import ctypes
 from datetime import datetime, timedelta
 from discord.ext import commands
 from discord.ext.commands import has_permissions, CheckFailure
@@ -11,7 +12,7 @@ from discord.utils import get
 from discord import FFmpegPCMAudio
 
 bot = commands.Bot(command_prefix='.')
-
+opus = ctypes.WinDLL("opus.dll")
 channelid = None
 user_notify = []
 conn = sqlite3.connect(':memory:')
@@ -146,7 +147,7 @@ async def roulette(ctx):
 async def connect(ctx):
     if ctx.message.author.guild_permissions.administrator:
         if not discord.opus.is_loaded():
-            discord.opus.load_opus('opus.dll')
+            discord.opus.load_opus(opus)
             channel = ctx.message.author.voice.channel
             if not channel:
                 await ctx.send("You are not connected to a voice channel")
