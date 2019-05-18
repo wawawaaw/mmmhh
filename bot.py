@@ -150,7 +150,7 @@ async def connect(ctx):
 	# you should replace this with the location the
 	# opus library is located in and with the proper filename.
 	# note that on windows this DLL is automatically provided for you
-	discord.opus.load_opus('libopus-0.dll')
+	discord.opus.load_opus('opus.dll')
 	
     if ctx.message.author.guild_permissions.administrator:
         channel = ctx.message.author.voice.channel
