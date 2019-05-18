@@ -56,7 +56,7 @@ async def stime(ctx):
         await ctx.send('fdp ta pas la perm')
     
 @bot.command()
-async def clear(ctx, amount=100):
+async def clear(ctx, amount):
     if ctx.message.author.guild_permissions.administrator:
         await ctx.channel.purge(limit=amount)
     else:
@@ -112,13 +112,13 @@ async def insertdate(ctx, DATE, FEJR, DHUHR, ASSER, MAGHREB, ICHA):
 
 @bot.command()
 async def selectall(ctx):
-    s= ""
+    s = ""
     try:
         for row in c.execute('SELECT * FROM ramadan'):
-            s+= row+"\n"
+            s+=str(row)+"\n"
         await ctx.send(s)
     except:
-       await ctx.send("Error") 
+        await ctx.send('Table vide.')
        
        
 async def ramadan():
