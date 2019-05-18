@@ -135,4 +135,4 @@ async def ramadan():
 
 
 bot.loop.create_task(ramadan())
-client.run(os.environ.get('BOT_TOKEN'))
+client.run(str(os.environ.get('BOT_TOKEN')))
