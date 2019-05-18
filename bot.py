@@ -58,7 +58,7 @@ async def stime(ctx):
 @bot.command()
 async def clear(ctx, args):
     try:
-        amount = int(args[0])
+        amount = int(args)
     except:
         pass
     
