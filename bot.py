@@ -14,7 +14,7 @@ user_notify = []
 conn = sqlite3.connect(':memory:')
 c = conn.cursor()
 c.execute('''CREATE TABLE ramadan
-             (date text, FEJR text, DHUHR text, ASSER text, MAGHREB text, ICHA text)''')
+             (date text, FEJR text, DHUHR text, ASSER text, MAGHREB text, IC0HA text)''')
 
 dates = [('2019-05-18', '04:08:00', '13:48:00', '17:57:00', '21:32:00', '23:09:00'),
              ('2019-05-19', '04:06:00', '13:48:00', '17:57:00', '21:34:00', '23:10:00'),
@@ -40,7 +40,6 @@ dates = [('2019-05-18', '04:08:00', '13:48:00', '17:57:00', '21:32:00', '23:09:0
 c.executemany('INSERT INTO ramadan VALUES (?,?,?,?,?,?)', dates)
 
 
-
                     
 @bot.event
 async def on_ready():
@@ -59,12 +58,14 @@ async def stime(ctx):
 async def clear(ctx, args):
     try:
         amount = int(args)
+
     except:
         pass
     
     if ctx.message.author.guild_permissions.administrator:
         await ctx.channel.purge(limit=amount)
         await ctx.send(str(amount)+' message.s supprimé.s')
+
     else:
         await ctx.send('fdp ta pas la perm')
     
@@ -113,9 +114,20 @@ async def test(ctx):
                     
 @bot.command()
 async def insertdate(ctx, DATE, FEJR, DHUHR, ASSER, MAGHREB, ICHA):
-    c.execute("INSERT INTO ramadan VALUES ('{}','{}','{}','{}','{}','{}')".format(DATE, FEJR, DHUHR, ASSER, MAGHREB, ICHA))
-    conn.commit()
-
+    if ctx.message.author.guild_permissions.administrator:
+        c.execute("INSERT INTO ramadan VALUES ('{}','{}','{}','{}','{}','{}')".format(DATE, FEJR, DHUHR, ASSER, MAGHREB, ICHA))
+        conn.commit()
+    else:
+        await ctx.send('fdp ta pas la perm')
+    
+@bot.command()
+async def updatedate(ctx, n1, n2, n3):
+    if ctx.message.author.guild_permissions.administrator:
+        c.execute("UPDATE ramadan SET '{}' = '{}' WHERE date = '{}'".format(n1,n2,n3))
+        await ctx.send('modifié ta mère')
+    else:
+        await ctx.send('fdp ta pas la perm')
+        
 @bot.command()
 async def selectall(ctx):
     s = ""
