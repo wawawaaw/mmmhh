@@ -105,19 +105,20 @@ async def test(ctx):
 #        await ctx.send('Coucou %s' %user)
                         
                     
-#@bot.command()
-#async def insertdate(ctx, DATE, FEJR, DHUHR, ASSER, MAGHREB, ICHA):
-#    c.execute("INSERT INTO ramadan VALUES ('{}','{}','{}','{}','{}','{}')".format(DATE, FEJR, DHUHR, ASSER, MAGHREB, ICHA))
-#    conn.commit()
+@bot.command()
+async def insertdate(ctx, DATE, FEJR, DHUHR, ASSER, MAGHREB, ICHA):
+    c.execute("INSERT INTO ramadan VALUES ('{}','{}','{}','{}','{}','{}')".format(DATE, FEJR, DHUHR, ASSER, MAGHREB, ICHA))
+    conn.commit()
 
-#@bot.command()
-#async def selectall(ctx):
-#    try:
-#        for row in c.execute('SELECT * FROM ramadan'):
-#            time.sleep(1)
-#            await ctx.send(row)
-#    except:
-#       await ctx.send("Error") 
+@bot.command()
+async def selectall(ctx):
+    s= ""
+    try:
+        for row in c.execute('SELECT * FROM ramadan'):
+            s+= row+"\n"
+        await ctx.send(row)
+    except:
+       await ctx.send("Error") 
        
        
 async def ramadan():
