@@ -1,6 +1,5 @@
 discord.py
 pynacl
-libopus0
 opuslib
 opus
 opus-api
