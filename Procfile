@@ -1,1 +1,1 @@
-worker: python caca.py
+worker: python bot.py
