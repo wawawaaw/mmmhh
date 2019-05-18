@@ -3,6 +3,7 @@ import asyncio
 import random
 import time
 import sqlite3
+import os
 from datetime import datetime, timedelta
 from discord.ext import commands
 from discord.ext.commands import has_permissions, CheckFailure
