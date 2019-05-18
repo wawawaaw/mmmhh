@@ -1,5 +1,1 @@
--U discord
-time
-sqlite3
-datetime
-pip
+pip install -u discord
