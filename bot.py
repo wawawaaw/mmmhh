@@ -1,11 +1,12 @@
 import discord
+import asyncio
 import time
 import sqlite3
-import os
 from datetime import datetime
 from discord.ext import commands
+from discord.ext.commands import has_permissions, CheckFailure
 
-client = commands.Bot(command_prefix='.')
+bot = commands.Bot(command_prefix='.')
 
 user_notify = []
 conn = sqlite3.connect(':memory:')
@@ -36,27 +37,32 @@ dates = [('2019-05-18', '04:08:00', '13:48:00', '17:57:00', '21:32:00', '23:09:0
 
 c.executemany('INSERT INTO ramadan VALUES (?,?,?,?,?,?)', dates)
 
-@client.event
+
+
+                    
+@bot.event
 async def on_ready():
     print('Bot is on')
-
-@client.command()
+                    
+                    
+@bot.command()
 async def stime(ctx):
     now = datetime.now()
     await ctx.send(now.strftime("%Y-%m-%d %H:%M:%S"))
     
-@client.command()
+@bot.command()
 async def clear(ctx, amount=100):
     await ctx.channel.purge(limit=amount)
     
-@client.command()
+@bot.command()
 async def notify(ctx, choice):
     try:
         if choice == 'add':
             try:
+                assert('<@'+str(ctx.author.id)+'>' not in user_notify)
                 user_notify.append('<@'+str(ctx.author.id)+'>')
                 await ctx.send(':heavy_plus_sign: Added to notify')
-            except:
+            except :
                 await ctx.send(":no_entry: Vous êtes déjà inscrit à la notification, ramadan mubarak mon khey. :no_entry:")
         elif choice == 'remove':
             try:
@@ -64,47 +70,26 @@ async def notify(ctx, choice):
                 await ctx.send(':heavy_minus_sign: Removed from notify')
             except ValueError:
                 await ctx.send(":no_entry: Vous n'êtes pas inscrit à la notification, ramadan mubarak mon khey. :no_entry:")
-    except MissingRequiredArgument:
-        await ctx.send(":no_entry: wrong param :no_entry:")
-
+    except:
+        await ctx.send(":no_entry: Connard. :no_entry:")
     
     
-@client.command()
+@bot.command()
 async def test(ctx):
     await ctx.send(user_notify)
     
-@client.command()
+@bot.command()
 async def send(ctx):
     for user in user_notify:
         await ctx.send('Coucou %s' %user)
                         
-@client.command()
-async def ramadan(ctx):
-    while True:
-        userL = ""
-        ligne_jour = []
-        now = datetime.now()
-        date = now.strftime("%Y-%m-%d")
-        c.execute('SELECT * FROM ramadan WHERE date=?', [date])
-        for jj in c.fetchone():
-            ligne_jour.append(jj)
-        while now.strftime("%H:%M:%S") != "23:59:59":
-            for x in ligne_jour[1:]:
-                time.sleep(1)
-                now = datetime.now()
-                if now.strftime("%H:%M:%S") == x:
-                    for user in user_notify:
-                        userL += user+" "
-                    s = ("Il est "+now.strftime("%H:%M:%S")+", et c'est l'heure du"+" "+str(ligne_jour.index(x))+" "+userL)
-                    await ctx.send(s.replace(' 1 ', ' FEJR :pray: ').replace(' 2 ', ' DHUHR :pray: ').replace(' 3 ', ' ASSER :pray: ').replace(' 4 ', ' MAGHREB :pray: ').replace(' 5 ', ' ICHA :pray: '))                            
-                    userL = ""
                     
-@client.command()
+@bot.command()
 async def insertdate(ctx, DATE, FEJR, DHUHR, ASSER, MAGHREB, ICHA):
     c.execute("INSERT INTO ramadan VALUES ('{}','{}','{}','{}','{}','{}')".format(DATE, FEJR, DHUHR, ASSER, MAGHREB, ICHA))
     conn.commit()
 
-@client.command()
+@bot.command()
 async def selectall(ctx):
     try:
         for row in c.execute('SELECT * FROM ramadan'):
@@ -112,7 +97,33 @@ async def selectall(ctx):
             await ctx.send(row)
     except:
        await ctx.send("Error") 
+       
+       
+async def ramadan():
+    await bot.wait_until_ready()
+    channel = bot.get_channel(579040235761958954)
+    
+    while True:
+        await channel.send('fdp')
+        userL = ""
+        ligne_jour = []
+        now = datetime.now()
+        date = now.strftime("%Y-%m-%d")
+        c.execute('SELECT * FROM ramadan WHERE date=?', [date])
+        for LJ in c.fetchone():
+            ligne_jour.append(LJ)
+        while now.strftime("%H:%M:%S") != "23:59:59":
+            await asyncio.sleep(0.65)
+            for x in ligne_jour[1:]:
+                now = datetime.now()
+                await channel.send(x+' '+now.strftime("%H:%M:%S"))
+                if now.strftime("%H:%M:%S") == x:
+                    for user in user_notify:
+                        userL += user+" "
+                    s = ("Il est "+now.strftime("%H:%M:%S")+", et c'est l'heure du"+" "+str(ligne_jour.index(x))+" "+userL)
+                    await channel.send(s.replace(' 1 ', ' FEJR :pray: ').replace(' 2 ', ' DHUHR :pray: ').replace(' 3 ', ' ASSER :pray: ').replace(' 4 ', ' MAGHREB :pray: ').replace(' 5 ', ' ICHA :pray: '))                            
+                    userL = ""
 
     
-    
+bot.loop.create_task(ramadan())
 client.run(str(os.environ.get('BOT_TOKEN')))
