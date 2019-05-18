@@ -146,7 +146,7 @@ async def roulette(ctx):
 async def connect(ctx):
     if ctx.message.author.guild_permissions.administrator:
         if not discord.opus.is_loaded():
-            discord.opus.load_opus('opus')
+            discord.opus.load_opus('opus.dll')
             channel = ctx.message.author.voice.channel
             if not channel:
                 await ctx.send("You are not connected to a voice channel")
