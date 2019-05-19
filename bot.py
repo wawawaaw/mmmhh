@@ -43,7 +43,10 @@ dates = [('2019-05-18', '04:08:00', '13:48:00', '17:57:00', '21:32:00', '23:09:0
 c.executemany('INSERT INTO ramadan VALUES (?,?,?,?,?,?)', dates)
 
 
-
+                    
+@bot.event
+async def on_ready():
+    print('Bot is on')
                     
                     
 @bot.command()
