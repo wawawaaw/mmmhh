@@ -167,6 +167,10 @@ async def selectall(ctx):
 async def ping(ctx):
     await ctx.send('Pong')  
     
+@bot.command()
+async def GOT(ctx):
+    await ctx.send(':wheelchair:')  
+    
 async def ramadan():
     await bot.wait_until_ready()
     
