@@ -11,6 +11,7 @@ from discord.utils import get
 
     
 bot = commands.Bot(command_prefix='.')
+toto = ''
 channelid = None
 user_notify = []
 conn = sqlite3.connect(':memory:')
@@ -105,6 +106,14 @@ async def test(ctx):
         await ctx.send(user_notify)
     else:
         await ctx.send('fdp ta pas la perm')
+        
+@bot.command()
+async def toto(ctx):
+    if ctx.message.author.guild_permissions.administrator:
+        global toto
+        await ctx.send(toto)
+    else:
+        await ctx.send('fdp ta pas la perm')
     
 #@bot.command()
 #async def send(ctx):
@@ -164,14 +173,15 @@ async def ramadan():
     while True:
             await asyncio.sleep(1)
             global channelid
+            global toto
             channel = bot.get_channel(channelid)
             while channelid != None:
                 userL = ""
                 ligne_jour = []
                 now = datetime.now() + timedelta(hours=2)
                 date = now.strftime("%Y-%m-%d")
-                print(date)
                 c.execute('SELECT * FROM ramadan WHERE date=?', [date])
+                toto = c.fetchone()
                 for LJ in c.fetchone():
                     ligne_jour.append(LJ)
                 while now.strftime("%H:%M:%S") != "23:59:59":
