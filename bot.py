@@ -8,7 +8,6 @@ from datetime import datetime, timedelta
 from discord.ext import commands
 from discord.ext.commands import has_permissions, CheckFailure
 from discord.utils import get
-from discord import FFmpegPCMAudio
 
     
 bot = commands.Bot(command_prefix='.')
@@ -141,21 +140,6 @@ async def roulette(ctx):
     else:
         await ctx.send('La chance :)')
     await ctx.channel.purge(limit=5)
-    
-@bot.command()
-async def connect(ctx):
-    if ctx.message.author.guild_permissions.administrator:
-        channel = ctx.message.author.voice.channel
-        if not channel:
-            await ctx.send("You are not connected to a voice channel")
-            return
-        voice = get(bot.voice_clients)
-        if voice and voice.is_connected():
-            await voice.move_to(channel)
-        else:
-            voice = await channel.connect()
-    else:
-        await ctx.send('fdp ta pas la perm')
         
 @bot.command()
 async def selectall(ctx):
@@ -186,6 +170,7 @@ async def ramadan():
                 ligne_jour = []
                 now = datetime.now() + timedelta(hours=2)
                 date = now.strftime("%Y-%m-%d")
+                print(date)
                 c.execute('SELECT * FROM ramadan WHERE date=?', [date])
                 for LJ in c.fetchone():
                     ligne_jour.append(LJ)
@@ -200,8 +185,7 @@ async def ramadan():
                             s = ("Il est "+now.strftime("%H:%M:%S")+", et c'est l'heure du"+" "+str(ligne_jour.index(x))+" "+userL)
                             await channel.send(s.replace(' 1 ', ' FEJR :pray: ').replace(' 2 ', ' DHUHR :pray: ').replace(' 3 ', ' ASSER :pray: ').replace(' 4 ', ' MAGHREB :pray: ').replace(' 5 ', ' ICHA :pray: '))                            
                             userL = ""
-                            source = FFmpegPCMAudio('allah3.mp3')
-                            player = voice.play(source)
+    
     
 bot.loop.create_task(ramadan())
 bot.run(os.getenv('BOT_TOKEN'))
