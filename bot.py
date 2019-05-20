@@ -186,7 +186,7 @@ async def ramadan():
                 date = now.strftime("%Y-%m-%d")
                 c.execute('SELECT * FROM ramadan WHERE date=?', [date])
                 toto = c.fetchone()
-                for LJ in c.fetchone():
+                for LJ in toto:
                     ligne_jour.append(LJ)
                 while now.strftime("%H:%M:%S") != "23:59:59":
                     await asyncio.sleep(0.5)
