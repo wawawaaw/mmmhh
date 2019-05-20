@@ -193,6 +193,7 @@ async def ramadan():
                     for x in ligne_jour[1:]:
                         now = datetime.now() + timedelta(hours=2)
                         if now.strftime("%H:%M:%S") == x:
+                            print(now.strftime("%H:%M:%S"))
                             await asyncio.sleep(1)
                             for user in user_notify:
                                 userL += user+" "
